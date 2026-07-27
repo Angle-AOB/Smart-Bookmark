@@ -191,6 +191,15 @@ const COLLECTIONS: CollectionGroup[] = [
             },
           },
           {
+            title: "淘卡优",
+            url: "https://taokayou.com/",
+            tag: { zh: "卡密比价", en: "Card-key prices" },
+            description: {
+              zh: "搜索全网低价卡密货源，聚合独立店铺并支持同款比价",
+              en: "Search low-cost card-key suppliers across stores and compare matching offers",
+            },
+          },
+          {
             title: "buygptpuls.com",
             url: "https://buygptpuls.com/",
             tag: { zh: "货源查询", en: "Supply lookup" },
