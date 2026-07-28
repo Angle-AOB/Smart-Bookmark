@@ -307,15 +307,6 @@ const COLLECTIONS: CollectionGroup[] = [
               en: "CDK subscription lookup for quickly checking validity and status",
             },
           },
-          {
-            title: "Nerver AC",
-            url: "https://cha.nerver.cc/",
-            tag: { zh: "资格检查", en: "Eligibility" },
-            description: {
-              zh: "ChatGPT accessToken 有效性与活动资格预检入口",
-              en: "Pre-check ChatGPT accessToken validity and activity eligibility",
-            },
-          },
         ],
       },
       {
@@ -389,6 +380,15 @@ const COLLECTIONS: CollectionGroup[] = [
             description: {
               zh: "浏览、预览并下载可用于 Codex 的自定义像素宠物包",
               en: "Browse, preview and download custom pixel pet packages for Codex",
+            },
+          },
+          {
+            title: "Codex Resets",
+            url: "https://codex-resets.com/",
+            tag: { zh: "重置追踪", en: "Reset tracker" },
+            description: {
+              zh: "追踪 OpenAI Codex 用量限制重置动态，监控官方推文并记录重置时间与频率",
+              en: "Track OpenAI Codex usage limit resets via official announcements and timing",
             },
           },
           {
