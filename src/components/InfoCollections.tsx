@@ -209,6 +209,15 @@ const COLLECTIONS: CollectionGroup[] = [
             },
           },
           {
+            title: "一可比价网",
+            url: "https://vs.yiketools.com/",
+            tag: { zh: "货源比价", en: "Supply compare" },
+            description: {
+              zh: "聚合卡密商家的 AI 资源实时库存与价格，同源商品自动聚合比价",
+              en: "Real-time inventory and price comparison across card-key merchants",
+            },
+          },
+          {
             title: "buygptpuls.com",
             url: "https://buygptpuls.com/",
             tag: { zh: "货源查询", en: "Supply lookup" },
