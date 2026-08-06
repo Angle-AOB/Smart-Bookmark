@@ -52,7 +52,7 @@ export async function syncSave(store: AiChannelStore): Promise<void> {
   // Build annotation map with ts
   const ann: Record<string, SyncAnnotation> = {};
   for (const [id, r] of Object.entries(store.recordsById)) {
-    const entry = toSyncAnnotation(r, now);
+    const entry = toSyncAnnotation(r);
     if (entry) ann[id] = entry;
   }
 
@@ -248,7 +248,7 @@ export interface ChannelExportData {
 export function buildExportData(store: AiChannelStore): ChannelExportData {
   const annotations: Record<string, SyncAnnotation> = {};
   for (const [id, r] of Object.entries(store.recordsById)) {
-    const entry = toSyncAnnotation(r, Date.now());
+    const entry = toSyncAnnotation(r);
     if (entry) annotations[id] = entry;
   }
   return { version: 2, exportedAt: Date.now(), groups: store.groups, annotations };
@@ -267,7 +267,6 @@ export function applyImportData(
 
 function toSyncAnnotation(
   record: AiChannelStore["recordsById"][string],
-  now: number,
 ): SyncAnnotation | null {
   const entry: SyncAnnotation = {};
   const note = record.note?.trim() ?? "";
@@ -290,6 +289,6 @@ function toSyncAnnotation(
   }
 
   if (!Object.keys(entry).length) return null;
-  entry.ts = record.annotationUpdatedAt ?? now;
+  entry.ts = record.annotationUpdatedAt ?? record.firstSeenAt;
   return entry;
 }

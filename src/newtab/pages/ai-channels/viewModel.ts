@@ -45,7 +45,6 @@ export function getChannelRecordUpdateTime(record: AiChannelRecord): number {
   return Math.max(
     record.annotationUpdatedAt ?? 0,
     record.lastCheckedAt ?? 0,
-    record.lastSeenAt ?? 0,
     record.firstSeenAt ?? 0,
   );
 }

@@ -200,6 +200,15 @@ const COLLECTIONS: CollectionGroup[] = [
             },
           },
           {
+            title: "211b.site",
+            url: "https://211b.site/",
+            tag: { zh: "货源聚合", en: "Supply search" },
+            description: {
+              zh: "聚合全网独立小铺的商品、价格与库存，适合搜索低价货源",
+              en: "Aggregated inventory and prices across independent AI shops",
+            },
+          },
+          {
             title: "buygptpuls.com",
             url: "https://buygptpuls.com/",
             tag: { zh: "货源查询", en: "Supply lookup" },
