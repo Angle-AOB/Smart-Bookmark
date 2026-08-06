@@ -299,6 +299,15 @@ const COLLECTIONS: CollectionGroup[] = [
             },
           },
           {
+            title: "BazaarLink Probe",
+            url: "https://bazaarlink.ai/probe",
+            tag: { zh: "中转检测", en: "Relay probe" },
+            description: {
+              zh: "中转站与反代 API 质量检测，判定模型真伪、Token 计量与注入风险",
+              en: "Probe relay and reverse-proxy APIs for model identity, token accuracy and injection risks",
+            },
+          },
+          {
             title: "AIProbe",
             url: "https://aiprobe.top/",
             tag: { zh: "AI 比价", en: "AI prices" },
