@@ -334,6 +334,15 @@ const COLLECTIONS: CollectionGroup[] = [
               en: "CDK subscription lookup for quickly checking validity and status",
             },
           },
+          {
+            title: "Button1 LowAPI",
+            url: "https://lowapi.button1.cn/",
+            tag: { zh: "AI 中转", en: "AI relay" },
+            description: {
+              zh: "低价 API 中转入口，适合查看低价模型与中转资源",
+              en: "Low-cost API relay entry for budget models and relay resources",
+            },
+          },
         ],
       },
       {
