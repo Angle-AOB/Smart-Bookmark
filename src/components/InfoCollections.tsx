@@ -343,6 +343,15 @@ const COLLECTIONS: CollectionGroup[] = [
               en: "Low-cost API relay entry for budget models and relay resources",
             },
           },
+          {
+            title: "NVtokens 价格监控",
+            url: "https://market.gptplusplus.live/",
+            tag: { zh: "价格监控", en: "Price monitor" },
+            description: {
+              zh: "监控 NV 号池统计、平台商品与质保渠道的实时价格与库存",
+              en: "Live price monitoring for NV number pools, platform products and warranty channels",
+            },
+          },
         ],
       },
       {
