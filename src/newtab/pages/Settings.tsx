@@ -8,7 +8,19 @@ import type { AccentPreset, Settings, ThemePreset } from "@/types";
 import { useT } from "@/lib/i18n";
 import { testAi } from "@/lib/ai";
 import { BUILTIN_ENGINES, faviconFor } from "@/lib/engines";
-import { Check, CheckCircle2, XCircle, Loader2, Flame, ExternalLink, Tags } from "lucide-react";
+import {
+  Check,
+  CheckCircle2,
+  XCircle,
+  Loader2,
+  Flame,
+  ExternalLink,
+  Tags,
+  Palette,
+  Search,
+  SlidersHorizontal,
+  Bot,
+} from "lucide-react";
 import { COMMON_LANGUAGES, clearTrendingCache } from "@/lib/github";
 import type { TrendingMode, TrendingRange, TrendingSort } from "@/types";
 import { toast } from "@/components/ui/toast";
@@ -28,10 +40,52 @@ export default function SettingsPage() {
   } | null>(null);
   const [testing, setTesting] = useState(false);
   const [aiChannelInput, setAiChannelInput] = useState("");
+  const [activeSection, setActiveSection] = useState("settings-appearance");
 
   useEffect(() => {
     getSettings().then(setS);
   }, []);
+
+  useEffect(() => {
+    if (!s) return;
+    const sectionIds = [
+      "settings-appearance",
+      "settings-search",
+      "settings-extras",
+      "settings-ai",
+      "settings-collection",
+      "settings-discover",
+    ];
+    const sections = sectionIds
+      .map((id) => document.getElementById(id))
+      .filter((section): section is HTMLElement => Boolean(section));
+    if (!sections.length) return;
+
+    let frame = 0;
+    const updateActiveSection = () => {
+      frame = 0;
+      const offset = 96;
+      let current = sections[0].id;
+      for (const section of sections) {
+        if (section.getBoundingClientRect().top <= offset) current = section.id;
+        else break;
+      }
+      setActiveSection((previous) => (previous === current ? previous : current));
+    };
+    const onScroll = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(updateActiveSection);
+    };
+
+    updateActiveSection();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (frame) cancelAnimationFrame(frame);
+    };
+  }, [s]);
 
   if (!s) return null;
 
@@ -55,9 +109,50 @@ export default function SettingsPage() {
     setTesting(false);
   };
 
+  const sections = [
+    { id: "settings-appearance", label: t("settings.appearance"), Icon: Palette },
+    { id: "settings-search", label: t("settings.search"), Icon: Search },
+    { id: "settings-extras", label: t("settings.extras"), Icon: SlidersHorizontal },
+    { id: "settings-ai", label: t("settings.ai"), Icon: Bot },
+    { id: "settings-collection", label: "本地收藏工作台", Icon: Tags },
+    { id: "settings-discover", label: t("settings.discover"), Icon: Flame },
+  ];
+
+  const jumpTo = (id: string) => {
+    setActiveSection(id);
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   return (
-    <div className="mx-auto max-w-3xl space-y-4">
-      <Card>
+    <div className="mx-auto grid max-w-6xl grid-cols-1 items-start gap-5 lg:grid-cols-[210px_minmax(0,1fr)]">
+      <aside className="lg:sticky lg:top-20">
+        <Card className="p-2">
+          <div className="mb-1 px-2 text-xs font-medium text-muted-foreground">
+            设置目录
+          </div>
+          <nav className="flex gap-1 overflow-x-auto pb-0.5 lg:block lg:space-y-0.5 lg:overflow-visible">
+            {sections.map(({ id, label, Icon }) => (
+              <button
+                key={id}
+                type="button"
+                onClick={() => jumpTo(id)}
+                className={cn(
+                  "group relative flex shrink-0 items-center gap-2 rounded-md px-2 py-2 text-left text-sm transition-colors hover:bg-muted/60 lg:w-full",
+                  activeSection === id
+                    ? "bg-primary/10 font-medium text-primary before:absolute before:inset-y-1 before:left-0 before:w-[2px] before:rounded-full before:bg-primary"
+                    : "text-foreground/85",
+                )}
+              >
+                <Icon className="h-[18px] w-[18px] shrink-0 text-primary/80 transition-transform group-hover:scale-105" />
+                <span className="truncate">{label}</span>
+              </button>
+            ))}
+          </nav>
+        </Card>
+      </aside>
+
+      <div className="min-w-0 space-y-4">
+      <Card id="settings-appearance" className="scroll-mt-24">
         <CardHeader>
           <CardTitle>{t("settings.appearance")}</CardTitle>
         </CardHeader>
@@ -204,7 +299,7 @@ export default function SettingsPage() {
         </CardContent>
       </Card>
 
-      <Card>
+      <Card id="settings-search" className="scroll-mt-24">
         <CardHeader>
           <CardTitle>{t("settings.search")}</CardTitle>
         </CardHeader>
@@ -255,7 +350,7 @@ export default function SettingsPage() {
         </CardContent>
       </Card>
 
-      <Card>
+      <Card id="settings-extras" className="scroll-mt-24">
         <CardHeader>
           <CardTitle>{t("settings.extras")}</CardTitle>
         </CardHeader>
@@ -328,7 +423,7 @@ export default function SettingsPage() {
         </CardContent>
       </Card>
 
-      <Card>
+      <Card id="settings-ai" className="scroll-mt-24">
         <CardHeader>
           <CardTitle>{t("settings.ai")}</CardTitle>
         </CardHeader>
@@ -425,7 +520,7 @@ export default function SettingsPage() {
         </CardContent>
       </Card>
 
-      <Card>
+      <Card id="settings-collection" className="scroll-mt-24">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Tags className="h-4 w-4 text-primary" />
@@ -526,7 +621,7 @@ export default function SettingsPage() {
         </CardContent>
       </Card>
 
-      <Card>
+      <Card id="settings-discover" className="scroll-mt-24">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Flame className="h-4 w-4 text-rose-500" />
@@ -717,6 +812,7 @@ export default function SettingsPage() {
           </Row>
         </CardContent>
       </Card>
+      </div>
     </div>
   );
 }
