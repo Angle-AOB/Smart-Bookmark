@@ -7,7 +7,7 @@ import { getSettings, setSettings } from "@/lib/storage";
 import type { AccentPreset, Settings, ThemePreset } from "@/types";
 import { useT } from "@/lib/i18n";
 import { testAi } from "@/lib/ai";
-import { BUILTIN_ENGINES, faviconFor } from "@/lib/engines";
+import { allEngines, faviconFor } from "@/lib/engines";
 import {
   Check,
   CheckCircle2,
@@ -27,8 +27,6 @@ import { toast } from "@/components/ui/toast";
 import { THEME_PRESETS } from "@/lib/themePresets";
 import { HOME_WIDGETS } from "@/lib/homeWidgets";
 import { cn } from "@/lib/utils";
-
-const ENGINE_LIST = BUILTIN_ENGINES.slice(0, 10);
 
 export default function SettingsPage() {
   const t = useT();
@@ -100,6 +98,8 @@ export default function SettingsPage() {
     if (cur.size === 0) cur.add("google");
     await update({ compareEngines: Array.from(cur) });
   };
+
+  const engineList = allEngines(s);
 
   const onTestAi = async () => {
     setTesting(true);
@@ -306,7 +306,7 @@ export default function SettingsPage() {
         <CardContent className="space-y-4">
           <Row label={t("settings.defaultEngine")}>
             <div className="flex flex-wrap gap-2">
-              {ENGINE_LIST.slice(0, 6).map((e) => (
+              {engineList.map((e) => (
                 <Button
                   key={e.id}
                   size="sm"
@@ -326,7 +326,7 @@ export default function SettingsPage() {
           </Row>
           <Row label={t("settings.compareEngines")}>
             <div className="flex flex-wrap gap-2">
-              {ENGINE_LIST.map((e) => {
+              {engineList.map((e) => {
                 const on = s.compareEngines.includes(e.id);
                 return (
                   <Button
