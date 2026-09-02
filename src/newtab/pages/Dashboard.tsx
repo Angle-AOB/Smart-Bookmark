@@ -10,6 +10,7 @@ import {
   flatten,
   findFolder,
   moveBookmark,
+  moveFolderBefore,
 } from "@/lib/bookmarks";
 import type { BookmarkNode, FlatBookmark, Settings, TrendingMode, TrendingRange } from "@/types";
 import { Card } from "@/components/ui/card";
@@ -99,6 +100,9 @@ export default function Dashboard({
   );
   const [items, setItems] = useState<FolderBookmark[]>([]);
   const [subFolders, setSubFolders] = useState<BookmarkNode[]>([]);
+  const [bookmarkView, setBookmarkView] = useState<"all" | "direct">(() =>
+    localStorage.getItem("sb_bookmarkView") === "direct" ? "direct" : "all",
+  );
   const [breadcrumb, setBreadcrumb] = useState<
     Array<{ id: string; title: string }>
   >([]);
@@ -185,7 +189,16 @@ export default function Dashboard({
       }
       const subs = (folder.children ?? []).filter((c) => !c.url);
       setSubFolders(subs);
-      const all = flatten([folder], "");
+      const all = bookmarkView === "direct"
+        ? (folder.children ?? []).filter((c) => !!c.url).map((b) => ({
+            id: b.id,
+            parentId: b.parentId,
+            title: b.title || b.url || "",
+            url: b.url || "",
+            path: folder.title || "Bookmarks",
+            dateAdded: b.dateAdded,
+          }))
+        : flatten([folder], "");
       setItems(all.map((b, i) => ({ ...b, index: i })));
       setBreadcrumb(buildBreadcrumb(tree, folder.id));
     } else {
@@ -194,7 +207,7 @@ export default function Dashboard({
       setSubFolders([]);
       setBreadcrumb([]);
     }
-  }, [tree, selected]);
+  }, [tree, selected, bookmarkView]);
 
   const filtered = useMemo(() => {
     const q = query.trim();
@@ -244,6 +257,24 @@ export default function Dashboard({
     const next = new Set(pinnedIds);
     next.has(id) ? next.delete(id) : next.add(id);
     await setSettings({ pinnedFolderIds: [...next] });
+  };
+
+  const onMoveFolder = async (id: string, targetId: string) => {
+    try {
+      await moveFolderBefore(id, targetId);
+      await reload();
+    } catch (err) {
+      console.warn("folder reorder failed", err);
+      toast("文件夹排序失败", "error");
+    }
+  };
+
+  const onToggleBookmarkView = () => {
+    setBookmarkView((current) => {
+      const next = current === "all" ? "direct" : "all";
+      localStorage.setItem("sb_bookmarkView", next);
+      return next;
+    });
   };
 
   const onChangeEngine = async (id: string) => {
@@ -660,6 +691,7 @@ export default function Dashboard({
             onToggle={onToggleExpand}
             onSelect={(id) => onSelectFolder(id)}
             onTogglePin={onTogglePin}
+            onMove={onMoveFolder}
           />
         </Card>
       </aside>
@@ -1010,7 +1042,7 @@ export default function Dashboard({
           </div>
         )}
 
-        {filtered.length > 0 && (
+        {selected && (
           <div className="flex flex-wrap items-end justify-between gap-2 border-b pb-1.5 pt-2">
             <div className="flex items-center gap-2">
               <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500/20 to-fuchsia-500/20 text-primary">
@@ -1019,6 +1051,15 @@ export default function Dashboard({
               <h2 className="text-sm font-semibold tracking-tight">
                 我的书签
               </h2>
+              <button
+                type="button"
+                onClick={onToggleBookmarkView}
+                className="rounded-md border bg-card px-2 py-1 text-[11px] text-muted-foreground transition hover:bg-accent hover:text-foreground"
+                title={bookmarkView === "all" ? "切换为仅当前文件夹" : "切换为包含子文件夹"}
+                aria-label="切换书签展示模式"
+              >
+                {bookmarkView === "all" ? "含子文件夹" : "当前文件夹"}
+              </button>
               <span className="text-[11px] text-muted-foreground">
                 · 共 {filtered.length} 个
                 {query.trim() ? "（已过滤）" : ""}
