@@ -7,8 +7,11 @@ export function cn(...inputs: ClassValue[]) {
 
 export function faviconOf(url: string, size = 32): string {
   try {
-    const u = new URL(url);
-    return `https://www.google.com/s2/favicons?domain=${u.hostname}&sz=${size}`;
+    new URL(url);
+    if (typeof chrome === "undefined" || !chrome.runtime?.getURL) return "";
+    return chrome.runtime.getURL(
+      `_favicon/?pageUrl=${encodeURIComponent(url)}&size=${size}`,
+    );
   } catch {
     return "";
   }

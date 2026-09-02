@@ -11,6 +11,17 @@ interface MiniSettings {
   searchEngine?: string;
 }
 
+function faviconOf(url: string, size = 32): string {
+  try {
+    new URL(url);
+    return chrome.runtime.getURL(
+      `_favicon/?pageUrl=${encodeURIComponent(url)}&size=${size}`,
+    );
+  } catch {
+    return "";
+  }
+}
+
 const STRINGS = {
   zh: {
     placeholder: "搜索书签或命令…",
@@ -689,7 +700,7 @@ async function mount() {
             kind: "bookmark",
             label: b.title || hostname,
             meta: hostname,
-            iconImg: `https://www.google.com/s2/favicons?domain=${hostname}&sz=32`,
+            iconImg: faviconOf(b.url, 32),
             onRun: () => {
               window.location.href = b.url;
             },
