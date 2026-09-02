@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ChevronDown, Plus, X } from "lucide-react";
-import { allEngines, faviconFor } from "@/lib/engines";
+import { allEngines } from "@/lib/engines";
 import type { CustomEngine, Settings } from "@/types";
 import { cn } from "@/lib/utils";
 import { setSettings } from "@/lib/storage";
+import EngineIcon from "@/components/EngineIcon";
 
 interface Props {
   settings: Settings;
@@ -77,21 +78,18 @@ export default function EngineSwitcher({
         title="切换搜索引擎"
       >
         {current && (
-          <img
-            src={faviconFor(current)}
-            alt=""
-            className="h-5 w-5 rounded"
-            onError={(e) => (e.currentTarget.style.visibility = "hidden")}
-          />
+          <EngineIcon engine={current} className="h-5 w-5" />
         )}
         <ChevronDown className="h-3 w-3 text-muted-foreground" />
       </button>
 
-      {open && (
-        <div
-          className="absolute left-0 top-12 z-50 w-[380px] max-w-[calc(100vw-2rem)] rounded-xl border bg-white p-3 shadow-2xl ring-1 ring-black/5 dark:bg-slate-900 dark:ring-white/5"
-          onClick={(e) => e.stopPropagation()}
-        >
+      <div
+        className={cn(
+          "absolute left-0 top-12 z-50 w-[380px] max-w-[calc(100vw-2rem)] rounded-xl border bg-white p-3 shadow-2xl ring-1 ring-black/5 dark:bg-slate-900 dark:ring-white/5",
+          !open && "hidden",
+        )}
+        onClick={(e) => e.stopPropagation()}
+      >
           <div className="grid grid-cols-4 gap-2">
             {engines.map((engine) => (
               <button
@@ -106,14 +104,7 @@ export default function EngineSwitcher({
                   setSwitcherOpen(false);
                 }}
               >
-                <img
-                  src={faviconFor(engine)}
-                  alt=""
-                  className="h-8 w-8 rounded"
-                  onError={(ev) =>
-                    (ev.currentTarget.style.visibility = "hidden")
-                  }
-                />
+                <EngineIcon engine={engine} className="h-8 w-8" />
                 <span className="max-w-full truncate text-xs">
                   {engine.name}
                 </span>
@@ -196,8 +187,7 @@ export default function EngineSwitcher({
               </div>
             </div>
           )}
-        </div>
-      )}
+      </div>
     </div>
   );
 }

@@ -40,7 +40,8 @@ import { toast } from "@/components/ui/toast";
 import QrDialog from "./QrDialog";
 import FolderTree from "@/components/FolderTree";
 import EngineSwitcher from "@/components/EngineSwitcher";
-import { faviconFor, findEngine } from "@/lib/engines";
+import EngineIcon from "@/components/EngineIcon";
+import { findEngine, type EngineDef } from "@/lib/engines";
 import { InfoEntries, InfoLiveNews } from "@/components/InfoCollections";
 import { isHomeWidgetVisible } from "@/lib/homeWidgets";
 import TopSitesSidebar from "@/components/widgets/TopSitesSidebar";
@@ -84,6 +85,7 @@ interface SearchCommandItem {
   subtitle: string;
   badge: string;
   iconUrl?: string;
+  engine?: EngineDef;
   Icon?: React.ComponentType<{ className?: string }>;
   onRun: () => void;
 }
@@ -486,7 +488,7 @@ export default function Dashboard({
         title: `用 ${currentEngine.name} 搜索 "${q}"`,
         subtitle: "默认回车执行搜索，书签结果可用方向键选择",
         badge: "Enter",
-        iconUrl: faviconFor(currentEngine),
+        engine: currentEngine,
         onRun: () => runEngineSearch(q),
       });
       if (settings.compareEngines.length > 1) {
@@ -1278,7 +1280,9 @@ function SearchCommandPalette({
                   )}
                 >
                   <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-background shadow-[0_1px_0_rgba(15,23,42,0.03)] ring-1 ring-border/80">
-                    {item.iconUrl ? (
+                    {item.engine ? (
+                      <EngineIcon engine={item.engine} className="h-4 w-4" />
+                    ) : item.iconUrl ? (
                       <img
                         src={item.iconUrl}
                         alt=""

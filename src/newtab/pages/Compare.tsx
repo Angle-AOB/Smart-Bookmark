@@ -14,10 +14,11 @@ import {
   Send,
 } from "lucide-react";
 import { useT } from "@/lib/i18n";
-import { allEngines, faviconFor, type EngineDef } from "@/lib/engines";
+import { allEngines, type EngineDef } from "@/lib/engines";
 import { setSettings } from "@/lib/storage";
 import { chat } from "@/lib/ai";
 import { toast } from "@/components/ui/toast";
+import EngineIcon from "@/components/EngineIcon";
 
 const HISTORY_KEY = "smart-bookmark::compare-history";
 
@@ -131,11 +132,7 @@ export default function Compare({ settings }: { settings: Settings }) {
                         : "bg-background hover:bg-accent")
                     }
                   >
-                    <img
-                      src={faviconFor(e)}
-                      alt=""
-                      className="h-3.5 w-3.5 rounded"
-                    />
+                    <EngineIcon engine={e} className="h-3.5 w-3.5" />
                     {e.name}
                   </button>
                 );
@@ -217,7 +214,7 @@ function EngineColumn({
     <Card className="flex h-[70vh] flex-col">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 py-3">
         <CardTitle className="flex items-center gap-2 text-sm">
-          <img src={faviconFor(engine)} alt="" className="h-4 w-4 rounded" />
+          <EngineIcon engine={engine} className="h-4 w-4" />
           {engine.name}
         </CardTitle>
         <div className="flex items-center gap-2">
@@ -249,7 +246,7 @@ function EngineColumn({
         ) : (
           <div className="flex h-full flex-col items-center justify-center gap-3 bg-gradient-to-br from-slate-50 to-slate-100 p-6 text-center text-sm dark:from-slate-800 dark:to-slate-900">
             <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/80 shadow-sm dark:bg-slate-900/60">
-              <img src={faviconFor(engine)} alt="" className="h-7 w-7 rounded" />
+              <EngineIcon engine={engine} className="h-7 w-7" />
             </div>
             <div className="text-muted-foreground">
               {engine.name} 不支持内嵌，请在新标签页查看结果

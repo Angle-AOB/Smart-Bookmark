@@ -142,7 +142,20 @@ export function findEngine(
 }
 
 export function faviconFor(engine: EngineDef): string {
-  return `https://www.google.com/s2/favicons?domain=${engine.host}&sz=64`;
+  return faviconCandidates(engine)[0];
+}
+
+export function faviconCandidates(engine: EngineDef): string[] {
+  const host = engine.host;
+  return [
+    `https://${host}/favicon.ico`,
+    `https://favicon.im/${host}`,
+    `https://icon.horse/icon/${host}`,
+    `https://www.google.com/s2/favicons?domain=${host}&sz=64`,
+    `https://icons.duckduckgo.com/ip3/${host}.ico`,
+    `https://api.faviconkit.com/${host}/64`,
+    `https://logo.clearbit.com/${host}`,
+  ];
 }
 
 function hostOf(url: string): string {

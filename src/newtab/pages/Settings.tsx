@@ -7,7 +7,8 @@ import { getSettings, setSettings } from "@/lib/storage";
 import type { AccentPreset, Settings, ThemePreset } from "@/types";
 import { useT } from "@/lib/i18n";
 import { testAi } from "@/lib/ai";
-import { allEngines, faviconFor } from "@/lib/engines";
+import { allEngines } from "@/lib/engines";
+import EngineIcon from "@/components/EngineIcon";
 import {
   Check,
   CheckCircle2,
@@ -314,11 +315,7 @@ export default function SettingsPage() {
                   onClick={() => update({ searchEngine: e.id })}
                   className="gap-1.5"
                 >
-                  <img
-                    src={faviconFor(e)}
-                    alt=""
-                    className="h-3.5 w-3.5 rounded"
-                  />
+                  <EngineIcon engine={e} className="h-3.5 w-3.5" />
                   {e.name}
                 </Button>
               ))}
@@ -336,11 +333,7 @@ export default function SettingsPage() {
                     onClick={() => toggleCompareEngine(e.id)}
                     className="gap-1.5"
                   >
-                    <img
-                      src={faviconFor(e)}
-                      alt=""
-                      className="h-3.5 w-3.5 rounded"
-                    />
+                    <EngineIcon engine={e} className="h-3.5 w-3.5" />
                     {e.name}
                   </Button>
                 );
