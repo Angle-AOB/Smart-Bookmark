@@ -17,6 +17,7 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { cn, faviconOf, hostnameOf } from "@/lib/utils";
+import BookmarkIconComponent from "@/components/BookmarkIcon";
 import {
   Search,
   Bookmark as BookmarkIcon,
@@ -856,13 +857,10 @@ export default function Dashboard({
                 title={s.url}
               >
                 <div className="flex h-14 w-14 items-center justify-center rounded-full bg-background shadow-sm ring-1 ring-border transition group-hover:-translate-y-0.5 group-hover:shadow-md">
-                  <img
-                    src={faviconOf(s.url, 64)}
-                    alt=""
+                  <BookmarkIconComponent
+                    url={s.url}
+                    size={64}
                     className="h-7 w-7 rounded-full"
-                    onError={(e) =>
-                      (e.currentTarget.style.visibility = "hidden")
-                    }
                   />
                 </div>
                 <div className="w-full truncate text-center text-[11px] text-muted-foreground">
@@ -1137,13 +1135,10 @@ export default function Dashboard({
                 )}
               >
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-slate-50 to-slate-100 ring-1 ring-inset ring-black/5 transition-all duration-200 group-hover:ring-primary/30 group-hover:shadow-sm dark:from-slate-800 dark:to-slate-900 dark:ring-white/5">
-                  <img
-                    src={faviconOf(b.url)}
-                    alt=""
+                  <BookmarkIconComponent
+                    url={b.url}
+                    size={32}
                     className="h-5 w-5"
-                    onError={(e) =>
-                      (e.currentTarget.style.visibility = "hidden")
-                    }
                   />
                 </div>
                 <div className="w-full truncate text-sm font-medium">

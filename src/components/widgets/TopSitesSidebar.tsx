@@ -2,7 +2,8 @@ import { Clock } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Tooltip } from "@/components/ui/tooltip";
 import HideWidgetButton from "@/components/HideWidgetButton";
-import { faviconOf, hostnameOf } from "@/lib/utils";
+import { hostnameOf } from "@/lib/utils";
+import BookmarkIcon from "@/components/BookmarkIcon";
 
 export interface TopSitesItem {
   url: string;
@@ -83,13 +84,10 @@ export default function TopSitesSidebar({
             className="group flex items-center gap-2.5 rounded-md px-2 py-2 transition hover:bg-accent/70"
           >
             <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-background shadow-[0_1px_0_rgba(15,23,42,0.03)] ring-1 ring-border/80">
-              <img
-                src={faviconOf(s.url, 32)}
-                alt=""
+              <BookmarkIcon
+                url={s.url}
+                size={32}
                 className="h-4 w-4 rounded"
-                onError={(e) =>
-                  (e.currentTarget.style.visibility = "hidden")
-                }
               />
             </div>
             <div className="min-w-0 flex-1">

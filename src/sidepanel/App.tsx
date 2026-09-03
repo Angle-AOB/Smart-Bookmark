@@ -9,13 +9,14 @@ import {
   ChevronRight,
   History as HistoryIcon,
 } from "lucide-react";
-import { faviconOf, hostnameOf, cn } from "@/lib/utils";
+import { hostnameOf, cn } from "@/lib/utils";
 import { useT } from "@/lib/i18n";
 import { getSettings, onSettingsChange, setSettings } from "@/lib/storage";
 import ThemeToggle from "@/components/ThemeToggle";
 import ThemeSwitcher from "@/components/ThemeSwitcher";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import EngineSwitcher from "@/components/EngineSwitcher";
+import BookmarkIcon from "@/components/BookmarkIcon";
 import { findEngine } from "@/lib/engines";
 
 interface HistoryHit {
@@ -213,13 +214,10 @@ export default function SidePanel() {
                       title={b.url}
                     >
                       <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-background shadow-sm ring-1 ring-border transition group-hover:-translate-y-0.5 group-hover:shadow-md">
-                        <img
-                          src={faviconOf(b.url)}
-                          alt=""
+                        <BookmarkIcon
+                          url={b.url}
+                          size={32}
                           className="h-5 w-5"
-                          onError={(e) =>
-                            (e.currentTarget.style.visibility = "hidden")
-                          }
                         />
                       </div>
                       <div className="w-full truncate text-center text-[10px] text-muted-foreground">
@@ -338,11 +336,10 @@ function SidepanelFolder({
                   style={{ paddingLeft: 14 + depth * 10 + "px" }}
                   title={b.url}
                 >
-                  <img
-                    src={faviconOf(b.url, 16)}
-                    alt=""
-                    className="h-4 w-4 rounded"
-                    onError={(e) => (e.currentTarget.style.display = "none")}
+                  <BookmarkIcon
+                    url={b.url}
+                    size={16}
+                    className="h-4 w-4"
                   />
                   <div className="min-w-0 flex-1">
                     <div className="truncate">{b.title}</div>
@@ -394,11 +391,10 @@ function SearchResults({
               className="group flex items-start gap-2 border-b px-3 py-2 text-sm transition hover:bg-accent"
               title={b.url}
             >
-              <img
-                src={faviconOf(b.url, 16)}
-                alt=""
-                className="mt-0.5 h-4 w-4 rounded"
-                onError={(e) => (e.currentTarget.style.display = "none")}
+              <BookmarkIcon
+                url={b.url}
+                size={16}
+                className="mt-0.5 h-4 w-4"
               />
               <div className="min-w-0 flex-1">
                 <div className="truncate font-medium">{b.title}</div>
@@ -425,11 +421,10 @@ function SearchResults({
               className="group flex items-start gap-2 border-b px-3 py-2 text-sm transition hover:bg-accent"
               title={h.url}
             >
-              <img
-                src={faviconOf(h.url, 16)}
-                alt=""
-                className="mt-0.5 h-4 w-4 rounded"
-                onError={(e) => (e.currentTarget.style.display = "none")}
+              <BookmarkIcon
+                url={h.url}
+                size={16}
+                className="mt-0.5 h-4 w-4"
               />
               <div className="min-w-0 flex-1">
                 <div className="truncate">{h.title}</div>
