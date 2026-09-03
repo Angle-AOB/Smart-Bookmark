@@ -154,16 +154,16 @@ export function faviconCandidatesForHost(host: string): string[] {
     // 易连接
     `https://favicon.so/${host}`,
     `https://ico.faviconkit.net/favicon/${host}`,
-    `https://faviconsnap.com/api/favicon?url=${host}`,
-    `https://favicon.im/${host}`,
     // 网站自身
     `https://${host}/favicon.ico`,
     // 不易连接
     `https://www.google.com/s2/favicons?domain=${host}&sz=64`,
-    `https://icons.duckduckgo.com/ip3/${host}.ico`,
     // 易返回未知图标
-    `https://favicon.vemetric.com/${host}`,
-    `https://icon.horse/icon/${host}`,
+    // `https://faviconsnap.com/api/favicon?url=${host}`,
+    // `https://favicon.im/${host}`,
+    // `https://favicon.vemetric.com/${host}`,
+    // `https://icon.horse/icon/${host}`,
+    // `https://icons.duckduckgo.com/ip3/${host}.ico`,
   ];
 }
 

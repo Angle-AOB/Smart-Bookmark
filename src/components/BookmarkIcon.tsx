@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { faviconCandidatesForHost, hostOf } from "@/lib/engines";
 import { faviconOf, cn } from "@/lib/utils";
+import { validateIconImage } from "@/lib/iconValidation";
 
 const LOAD_TIMEOUT_MS = 2000;
 const candidateResults = new Map<string, boolean>();
@@ -25,8 +26,7 @@ function loadCandidate(url: string): Promise<boolean> {
       resolve(valid);
     };
     const timer = window.setTimeout(() => finish(false), LOAD_TIMEOUT_MS);
-    image.onload = () =>
-      finish(image.naturalWidth >= 16 && image.naturalHeight >= 16);
+    image.onload = () => finish(validateIconImage(image));
     image.onerror = () => finish(false);
     image.src = url;
   });
