@@ -16,7 +16,7 @@ import type { BookmarkNode, FlatBookmark, Settings, TrendingMode, TrendingRange 
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { cn, faviconOf, hostnameOf } from "@/lib/utils";
+import { cn, hostnameOf } from "@/lib/utils";
 import BookmarkIconComponent from "@/components/BookmarkIcon";
 import {
   Search,
@@ -86,6 +86,7 @@ interface SearchCommandItem {
   subtitle: string;
   badge: string;
   iconUrl?: string;
+  url?: string; // 用于 BookmarkIcon 组件的原始 URL
   engine?: EngineDef;
   Icon?: React.ComponentType<{ className?: string }>;
   onRun: () => void;
@@ -513,7 +514,7 @@ export default function Dashboard({
           ? `${hostnameOf(b.url)} · ${b.path}`
           : hostnameOf(b.url),
         badge: "bookmark",
-        iconUrl: faviconOf(b.url, 32),
+        url: b.url,
         onRun: () => openExternal(b.url),
       });
     }
@@ -531,7 +532,7 @@ export default function Dashboard({
         title: h.title,
         subtitle: hostnameOf(h.url),
         badge: "history",
-        iconUrl: faviconOf(h.url, 32),
+        url: h.url,
         onRun: () => openExternal(h.url),
       });
     }
@@ -549,7 +550,7 @@ export default function Dashboard({
         title: s.title || hostnameOf(s.url),
         subtitle: hostnameOf(s.url),
         badge: "top site",
-        iconUrl: faviconOf(s.url, 32),
+        url: s.url,
         onRun: () => openExternal(s.url),
       });
     }
@@ -1277,6 +1278,12 @@ function SearchCommandPalette({
                   <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-background shadow-[0_1px_0_rgba(15,23,42,0.03)] ring-1 ring-border/80">
                     {item.engine ? (
                       <EngineIcon engine={item.engine} className="h-4 w-4" />
+                    ) : item.url ? (
+                      <BookmarkIconComponent
+                        url={item.url}
+                        size={32}
+                        className="h-4 w-4 rounded"
+                      />
                     ) : item.iconUrl ? (
                       <img
                         src={item.iconUrl}
