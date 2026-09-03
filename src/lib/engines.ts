@@ -146,7 +146,10 @@ export function faviconFor(engine: EngineDef): string {
 }
 
 export function faviconCandidates(engine: EngineDef): string[] {
-  const host = engine.host;
+  return faviconCandidatesForHost(engine.host);
+}
+
+export function faviconCandidatesForHost(host: string): string[] {
   return [
     `https://${host}/favicon.ico`,
     `https://favicon.im/${host}`,
@@ -158,7 +161,7 @@ export function faviconCandidates(engine: EngineDef): string[] {
   ];
 }
 
-function hostOf(url: string): string {
+export function hostOf(url: string): string {
   try {
     return new URL(url).hostname.replace(/^www\./, "");
   } catch {

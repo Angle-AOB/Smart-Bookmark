@@ -6,7 +6,8 @@ import { Switch } from "@/components/ui/switch";
 import { scanAll, buildProfile, type Profile } from "@/lib/cleaner";
 import type { CleanIssue } from "@/types";
 import { removeBookmark, removeTree } from "@/lib/bookmarks";
-import { faviconOf, hostnameOf, formatDate } from "@/lib/utils";
+import { hostnameOf, formatDate } from "@/lib/utils";
+import BookmarkIcon from "@/components/BookmarkIcon";
 import {
   AlertTriangle,
   Copy,
@@ -343,11 +344,10 @@ function IssueRow({
         className="mt-1 h-4 w-4 accent-primary"
       />
       {it.bookmark && (
-        <img
-          src={faviconOf(it.bookmark.url)}
-          alt=""
-          className="mt-0.5 h-4 w-4 rounded"
-          onError={(e) => (e.currentTarget.style.display = "none")}
+        <BookmarkIcon
+          url={it.bookmark.url}
+          size={16}
+          className="mt-0.5 h-4 w-4"
         />
       )}
       <div className="min-w-0 flex-1">
