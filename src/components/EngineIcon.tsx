@@ -3,7 +3,7 @@ import type { EngineDef } from "@/lib/engines";
 import { faviconCandidates } from "@/lib/engines";
 import { cn } from "@/lib/utils";
 
-const LOAD_TIMEOUT_MS = 3000;
+const LOAD_TIMEOUT_MS = 2000;
 const candidateResults = new Map<string, boolean>();
 const candidateLoads = new Map<string, Promise<boolean>>();
 

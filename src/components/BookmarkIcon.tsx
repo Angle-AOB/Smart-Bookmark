@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { faviconCandidatesForHost, hostOf } from "@/lib/engines";
 import { faviconOf, cn } from "@/lib/utils";
 
-const LOAD_TIMEOUT_MS = 3000;
+const LOAD_TIMEOUT_MS = 2000;
 const candidateResults = new Map<string, boolean>();
 const candidateLoads = new Map<string, Promise<boolean>>();
 
