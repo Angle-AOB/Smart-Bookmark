@@ -14,6 +14,7 @@ export const DEFAULT_SETTINGS: Settings = {
   aiApiKey: "",
   aiBaseUrl: "",
   cardDensity: "comfy",
+  cardLayout: "vertical",
   language: "auto",
   floatingBall: false,
   floatingDisabledDomains: [],

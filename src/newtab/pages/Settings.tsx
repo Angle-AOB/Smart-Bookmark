@@ -288,6 +288,27 @@ export default function SettingsPage() {
               ))}
             </div>
           </Row>
+          <Row label={t("settings.cardLayout")}>
+            <div className="flex gap-2">
+              {(
+                [
+                  ["vertical", t("settings.cardLayoutVertical")],
+                  ["horizontal", t("settings.cardLayoutHorizontal")],
+                ] as const
+              ).map(([v, label]) => (
+                <Button
+                  key={v}
+                  size="sm"
+                  variant={(s.cardLayout ?? "vertical") === v ? "default" : "outline"}
+                  onClick={() =>
+                    update({ cardLayout: v as Settings["cardLayout"] })
+                  }
+                >
+                  {label}
+                </Button>
+              ))}
+            </div>
+          </Row>
           <Row label={t("settings.wallpaper")}>
             <Input
               placeholder={t("settings.wallpaperPh")}

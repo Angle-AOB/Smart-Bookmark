@@ -1090,9 +1090,13 @@ export default function Dashboard({
         <div
           className={cn(
             "grid gap-3",
-            settings.cardDensity === "compact"
-              ? "grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8"
-              : "grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6",
+            settings.cardLayout === "horizontal"
+              ? settings.cardDensity === "compact"
+                ? "grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6"
+                : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+              : settings.cardDensity === "compact"
+                ? "grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8"
+                : "grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6",
           )}
         >
           {pagedItems.map((b) => (
@@ -1118,8 +1122,14 @@ export default function Dashboard({
                 });
               }}
               className={cn(
-                "group relative flex flex-col items-center gap-2 rounded-2xl border border-border/60 bg-card p-3 text-center shadow-[0_1px_0_rgba(0,0,0,0.02)] transition-all duration-200 ease-out",
+                "group relative flex rounded-2xl border border-border/60 bg-card shadow-[0_1px_0_rgba(0,0,0,0.02)] transition-all duration-200 ease-out",
                 "hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-[0_8px_24px_-12px_hsl(var(--primary)/0.25)] hover:ring-1 hover:ring-primary/20",
+                settings.cardLayout === "horizontal"
+                  ? cn(
+                      "flex-row items-center gap-3 py-2.5 pr-7",
+                      canReorder ? "pl-5" : "pl-2.5",
+                    )
+                  : "flex-col items-center gap-2 p-3 text-center",
                 canReorder && "cursor-grab",
                 dragId === b.id && "cursor-grabbing opacity-50",
                 overId === b.id && dragId !== b.id && "ring-2 ring-primary/60",
@@ -1131,25 +1141,44 @@ export default function Dashboard({
                 target="_blank"
                 rel="noreferrer"
                 className={cn(
-                  "flex w-full flex-col items-center gap-2",
+                  "flex w-full",
+                  settings.cardLayout === "horizontal"
+                    ? "flex-row items-center gap-3"
+                    : "flex-col items-center gap-2",
                   canReorder && "cursor-inherit",
                 )}
               >
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-slate-50 to-slate-100 ring-1 ring-inset ring-black/5 transition-all duration-200 group-hover:ring-primary/30 group-hover:shadow-sm dark:from-slate-800 dark:to-slate-900 dark:ring-white/5">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-slate-50 to-slate-100 ring-1 ring-inset ring-black/5 transition-all duration-200 group-hover:ring-primary/30 group-hover:shadow-sm dark:from-slate-800 dark:to-slate-900 dark:ring-white/5">
                   <BookmarkIconComponent
                     url={b.url}
                     size={32}
                     className="h-5 w-5"
                   />
                 </div>
-                <div className="w-full truncate text-sm font-medium">
-                  {b.title}
-                </div>
-                <div className="w-full truncate text-[11px] text-muted-foreground">
-                  {hostnameOf(b.url)}
+                <div
+                  className={cn(
+                    "flex flex-col min-w-0",
+                    settings.cardLayout === "horizontal"
+                      ? "flex-1 items-start justify-center gap-0.5 text-left"
+                      : "w-full items-center gap-2 text-center",
+                  )}
+                >
+                  <div
+                    className={cn(
+                      "w-full text-sm font-medium",
+                      settings.cardLayout === "horizontal"
+                        ? "line-clamp-2"
+                        : "truncate",
+                    )}
+                  >
+                    {b.title}
+                  </div>
+                  <div className="w-full truncate text-[11px] text-muted-foreground">
+                    {hostnameOf(b.url)}
+                  </div>
                 </div>
               </a>
-              <ExternalLink className="absolute right-2 top-2 h-3 w-3 text-muted-foreground opacity-0 transition group-hover:opacity-70" />
+              <ExternalLink className="pointer-events-none absolute right-2 top-2 h-3 w-3 text-muted-foreground opacity-0 transition group-hover:opacity-70" />
               <button
                 type="button"
                 onClick={(e) => {
@@ -1163,13 +1192,25 @@ export default function Dashboard({
                     y: e.clientY,
                   });
                 }}
-                className="absolute bottom-2 right-2 rounded p-1 text-muted-foreground opacity-0 hover:bg-accent group-hover:opacity-100"
+                className={cn(
+                  "absolute rounded p-1 text-muted-foreground opacity-0 hover:bg-accent group-hover:opacity-100",
+                  settings.cardLayout === "horizontal"
+                    ? "bottom-1 right-1"
+                    : "bottom-2 right-2",
+                )}
                 aria-label="more"
               >
                 <MoreHorizontal className="h-3.5 w-3.5" />
               </button>
               {canReorder && (
-                <GripVertical className="pointer-events-none absolute left-2 top-2 h-3.5 w-3.5 text-muted-foreground opacity-0 group-hover:opacity-60" />
+                <GripVertical
+                  className={cn(
+                    "pointer-events-none absolute h-3.5 w-3.5 text-muted-foreground opacity-0 group-hover:opacity-60",
+                    settings.cardLayout === "horizontal"
+                      ? "left-1 top-1/2 -translate-y-1/2"
+                      : "left-2 top-2",
+                  )}
+                />
               )}
             </div>
           ))}
